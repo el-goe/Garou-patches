@@ -4,40 +4,37 @@ This repository contains BPS patches for **Garou: Mark of the Wolves**, all targ
 
 | Patch | What it does | Source ROM it expects |
 |---|---|---|
+| `garou_all_patches.bps` | **All three fixes below, in one patch** | Clean, vanilla P4 ROM |
 | `garou_training_music_patch.bps` | Restores background music in Training Mode, with an ON/OFF toggle | Clean, vanilla P4 ROM |
 | `garou_no_pause_patch.bps` | Fixes leftover "PAUSE" text corrupting the Training Mode options menu | Clean, vanilla P4 ROM |
-| `garou_no_pause_on_music_patch.bps` | Same PAUSE fix as above, for use **together with** the music patch | P4 ROM after the music patch has been applied |
+| `garou_stage_variations_patch.bps` | Lets you pick alternate stage variations (day / sunset / night, etc.) in STAGE CHANGE | Clean, vanilla P4 ROM |
 
-Pick the combination that fits what you want:
+Pick the one that fits what you want:
 
-- **Just the music patch** → apply `garou_training_music_patch.bps` to a clean ROM. Done.
-- **Just the PAUSE fix** → apply `garou_no_pause_patch.bps` to a clean ROM. Done.
-- **Both** → apply the music patch first, then apply `garou_no_pause_on_music_patch.bps` (not `garou_no_pause_patch.bps`) to that result. See [Applying both patches together](#applying-both-patches-together).
+- **Everything** → apply `garou_all_patches.bps` to a clean ROM. This is the recommended option.
+- **Just the music patch** → apply `garou_training_music_patch.bps` to a clean ROM.
+- **Just the PAUSE fix** → apply `garou_no_pause_patch.bps` to a clean ROM.
+- **Just the stage variations** → apply `garou_stage_variations_patch.bps` to a clean ROM.
+
+Every patch here is applied to a **clean, unmodified P4 ROM**. Pick exactly one and you're done.
+
+The individual patches each place their own code in the same spare area of the ROM, so they cannot be stacked on top of one another — applying a second one to an already-patched ROM will not work. If you want more than one fix, use `garou_all_patches.bps`, which is a single combined build with that spare space divided up properly.
 
 ## Requirements
 
 - A clean, matching **Garou: Mark of the Wolves P4 ROM**
-- The patch file(s) you want from this repository
+- One patch file from this repository
 - A BPS patching tool, such as **Floating IPS (Flips)**
 
-## Applying a single patch
+## Applying a patch
 
 1. Back up your original P4 ROM.
 2. Open your BPS patching tool and choose **Apply Patch**.
-3. Select either `garou_training_music_patch.bps` or `garou_no_pause_patch.bps`.
+3. Select the patch file you want.
 4. Select the clean Garou P4 ROM as the source.
 5. Save the patched P4 ROM.
 
-## Applying both patches together
-
-The two fixes are separate patches with independent trampoline code, so combining them requires applying them in sequence rather than picking both files against a clean ROM:
-
-1. Back up your original P4 ROM.
-2. Apply `garou_training_music_patch.bps` to the clean P4 ROM. Save the result — this is your music-patched ROM.
-3. Apply `garou_no_pause_on_music_patch.bps` **to the music-patched ROM** from step 2 (not the original clean ROM, and not using `garou_no_pause_patch.bps`).
-4. Save the result. This final ROM has both fixes.
-
-Each patch checks the source ROM's checksum and will refuse to apply (or warn) if it doesn't match what it expects — see the table above for which source each patch needs. In particular, `garou_no_pause_patch.bps` and `garou_no_pause_on_music_patch.bps` are two different builds of the same fix for two different starting points; don't mix them up.
+Each patch checks the source ROM's checksum and will refuse to apply (or warn) if it doesn't match. If you get a checksum mismatch, you're almost certainly feeding it a ROM that has already been patched — start again from a clean backup.
 
 ## What each patch does
 
@@ -69,7 +66,29 @@ The corruption is literally leftover "PAUSE" text — the same text shown by the
 
 This only affects Training Mode. The normal single-player PAUSE screen (Story/Survival/VS modes) is untouched and still displays exactly as before.
 
-This fix is available as two separate patch files with identical behavior — `garou_no_pause_patch.bps` for a clean ROM, and `garou_no_pause_on_music_patch.bps` for a ROM that already has the music patch applied. Use whichever matches your starting ROM.
+### Stage variations patch
+
+Several Garou stages have more than one version. During a normal match the game swaps between them from round to round — Terry's harbour goes from sunset to night, and a few stages change so much they read as an entirely different place. In Training Mode you only ever got the first version of each stage, because Training Mode has no rounds for the game to count.
+
+This patch extends the **STAGE CHANGE** option so every version is selectable directly. The option now lists 30 entries instead of 14, with a number after the stage name where more than one version exists:
+
+| Stage | Versions | | Stage | Versions |
+|---|---|---|---|---|
+| TERRY | 3 | | MARCO | 2 |
+| ROCK | 1 | | HOKUTOMARU | 3 |
+| DONGHWAN | 1 | | FREEMAN | 1 |
+| JAEHOON | 3 | | GRIFFON | 3 |
+| HOTARU | 2 | | KEVIN | 3 |
+| GATO | 3 | | GRANT | 1 |
+| B.JENET | 3 | | KAIN | 1 |
+
+Stages with only one version are listed by name alone, exactly as before. Left and right on the STAGE CHANGE row cycle through the full list, and the selected version loads immediately when you close the menu.
+
+This only affects Training Mode. Story, Survival and VS still rotate stage versions between rounds exactly as the original game does.
+
+## Credits
+
+Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode.
 
 ## Notes
 
