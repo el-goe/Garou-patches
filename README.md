@@ -86,6 +86,8 @@ Stages with only one version are listed by name alone, exactly as before. Left a
 
 This only affects Training Mode. Story, Survival and VS still rotate stage versions between rounds exactly as the original game does.
 
+<img width="960" height="672" alt="garou_stage_variations" src="https://github.com/user-attachments/assets/08bc7584-a36a-4677-95a3-49f68aca0b3b" />
+
 ## Credits
 
 Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode.
