@@ -68,7 +68,7 @@ This only affects Training Mode. The normal single-player PAUSE screen (Story/Su
 
 ### Stage variations patch
 
-Several Garou stages have more than one version. During a normal match the game swaps between them from round to round — Terry's harbour goes from sunset to night, and a few stages change so much they read as an entirely different place. In Training Mode you only ever got the first version of each stage, because Training Mode has no rounds for the game to count.
+Several Garou stages have more than one version. During a normal match the game swaps between them from round to round — Gato's stage for example goes from sunset to night, and a few stages change so much they read as an entirely different place. In Training Mode you only ever got the first version of each stage, because Training Mode has no rounds for the game to count.
 
 This patch extends the **STAGE CHANGE** option so every version is selectable directly. The option now lists 30 entries instead of 14, with a number after the stage name where more than one version exists:
 
