@@ -1,20 +1,19 @@
-# Garou: Mark of the Wolves — Training Mode Patches
+# Garou: Mark of the Wolves — ROM Patches
 
-This repository contains BPS patches for **Garou: Mark of the Wolves**, all targeting the **P4 ROM**. Together they fix and improve the game's Training Mode.
+This repository contains BPS patches for **Garou: Mark of the Wolves**, all targeting the **P4 ROM** (`253-ep4.p4`). They fix and improve the game's Training Mode, and restore SNK's unused "FATAL FURY" branding on USA machines.
 
 | Patch | What it does | Source ROM it expects |
 |---|---|---|
-| `garou_all_patches.bps` | **All three fixes below, in one patch** | Clean, vanilla P4 ROM |
+| `garou_all_patches.bps` | **All four fixes below, in one patch** | Clean, vanilla P4 ROM |
 | `garou_training_music_patch.bps` | Restores background music in Training Mode, with an ON/OFF toggle | Clean, vanilla P4 ROM |
 | `garou_no_pause_patch.bps` | Fixes leftover "PAUSE" text corrupting the Training Mode options menu | Clean, vanilla P4 ROM |
 | `garou_stage_variations_patch.bps` | Lets you pick alternate stage variations (day / sunset / night, etc.) in STAGE CHANGE | Clean, vanilla P4 ROM |
+| `garou_fatal_fury_title_patch.bps` | Restores the unused "FATAL FURY" title screen and logo — **USA region only** | Clean, vanilla P4 ROM |
 
 Pick the one that fits what you want:
 
 - **Everything** → apply `garou_all_patches.bps` to a clean ROM. This is the recommended option.
-- **Just the music patch** → apply `garou_training_music_patch.bps` to a clean ROM.
-- **Just the PAUSE fix** → apply `garou_no_pause_patch.bps` to a clean ROM.
-- **Just the stage variations** → apply `garou_stage_variations_patch.bps` to a clean ROM.
+- **Just one fix** → apply that single patch to a clean ROM.
 
 Every patch here is applied to a **clean, unmodified P4 ROM**. Pick exactly one and you're done.
 
@@ -36,6 +35,20 @@ The individual patches each place their own code in the same spare area of the R
 
 Each patch checks the source ROM's checksum and will refuse to apply (or warn) if it doesn't match. If you get a checksum mismatch, you're almost certainly feeding it a ROM that has already been patched — start again from a clean backup.
 
+### Checksums
+
+Source `253-ep4.p4` — CRC32 `DA92C08E`
+
+| Patch | Patched P4 CRC32 |
+|---|---|
+| `garou_all_patches.bps` | `B1D1A6EE` |
+| `garou_training_music_patch.bps` | `F9617DE9` |
+| `garou_no_pause_patch.bps` | `1723FD9F` |
+| `garou_stage_variations_patch.bps` | `2062C120` |
+| `garou_fatal_fury_title_patch.bps` | `41E98056` |
+
+Your emulator or ROM manager will warn that the P4 ROM's checksum no longer matches. That is expected for a patched ROM.
+
 ## What each patch does
 
 ### Music patch
@@ -53,7 +66,7 @@ It also adds a new entry in the Training Mode options menu that lets you enable 
 
 Enter Training Mode and use the new **MUSIC** option in the Training Mode menu to toggle the feature.
 
-- **ON** — Training Mode music is restored and follows the selected stage.
+- **ON** — Training Mode music isº restored and follows the selected stage.
 - **OFF** — Training Mode music is muted.
 
 <img width="960" height="672" alt="garou_music_menu" src="https://github.com/user-attachments/assets/70b096b0-df51-48a1-9da8-bed3a3773647" /> 
@@ -87,6 +100,27 @@ Stages with only one version are listed by name alone, exactly as before. Left a
 This only affects Training Mode. Story, Survival and VS still rotate stage versions between rounds exactly as the original game does.
 
 <img width="960" height="672" alt="garou_stage_variations" src="https://github.com/user-attachments/assets/08bc7584-a36a-4677-95a3-49f68aca0b3b" />
+
+### FATAL FURY title patch
+
+Garou was going to be released in the US as **"Fatal Fury: Mark of the Wolves"**. SNK left the artwork in the ROM but never wired it up, so every region shows the Japanese 〔餓狼〕 branding.
+
+This patch restores the English branding in two places:
+
+- **The winged title screen** — the one shown at the end of the second attract-mode intro. It now reads **FATAL FURY / MARK OF THE WOLVES**, including the full logo fade-in animation, which SNK also left in the ROM complete and unused.
+- **The small corner logo** — the winged mark shown in the corner during matches and DEMONSTRATION. SNK left a complete English version of this too, sitting right next to the Japanese one.
+
+**The patch is region-gated.** It reads the BIOS country code and only takes effect on USA machines:
+
+| Region | Winged title screen | In-game corner logo |
+|---|---|---|
+| **USA** | FATAL FURY / MARK OF THE WOLVES | FATAL FURY / MARK OF THE WOLVES |
+| Japan | 〔餓狼〕GAROU — unchanged | 〔餓狼〕 — unchanged |
+| Europe | 〔餓狼〕GAROU — unchanged | 〔餓狼〕 — unchanged |
+
+On Japanese and European machines the game behaves exactly as the original. On a Universe BIOS, set the region to USA in the BIOS menu.
+
+Nothing else is touched. The first intro's plain title screen and all other in-game graphics are left exactly as they were in every region.
 
 ## Credits
 
