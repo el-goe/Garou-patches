@@ -1,6 +1,6 @@
 # Garou: Mark of the Wolves — ROM Patches
 
-This repository contains BPS patches for **Garou: Mark of the Wolves**, all targeting the **P4 ROM** (`253-ep4.p4`). They fix and improve the game's Training Mode, and restore SNK's unused "FATAL FURY" branding on USA machines.
+This repository contains BPS patches for **Garou: Mark of the Wolves**, all targeting the **P4 ROM** (`253-ep4.p4`). They fix and improve the game's Training Mode, restore SNK's unused "FATAL FURY" branding on USA machines, and clean up the flickering floor shadows.
 
 | Patch | What it does | Source ROM it expects |
 |---|---|---|
@@ -9,20 +9,23 @@ This repository contains BPS patches for **Garou: Mark of the Wolves**, all targ
 | `garou_no_pause_patch.bps` | Fixes leftover "PAUSE" text corrupting the Training Mode options menu | Clean, vanilla P4 ROM |
 | `garou_stage_variations_patch.bps` | Lets you pick alternate stage variations (day / sunset / night, etc.) in STAGE CHANGE | Clean, vanilla P4 ROM |
 | `garou_fatal_fury_title_patch.bps` | Restores the unused "FATAL FURY" title screen and logo — **USA region only** | Clean, vanilla P4 ROM |
+| `garou_shadow_colors.bps` | Removes the flicker from the floor shadows and gives each stage its own shadow colour | A ROM already patched with `garou_all_patches.bps` |
 
 Pick the one that fits what you want:
 
-- **Everything** → apply `garou_all_patches.bps` to a clean ROM. This is the recommended option.
+- **Everything** → apply `garou_all_patches.bps` to a clean ROM, then `garou_shadow_colors.bps` on top. This is the recommended option.
 - **Just one fix** → apply that single patch to a clean ROM.
 
-Every patch here is applied to a **clean, unmodified P4 ROM**. Pick exactly one and you're done.
+Every patch here except `garou_shadow_colors.bps` is applied to a **clean, unmodified P4 ROM**, and you pick exactly one of them.
 
 The individual patches each place their own code in the same spare area of the ROM, so they cannot be stacked on top of one another — applying a second one to an already-patched ROM will not work. If you want more than one fix, use `garou_all_patches.bps`, which is a single combined build with that spare space divided up properly.
+
+`garou_shadow_colors.bps` is the one exception, and it works the other way round: it is **built to be applied on top of `garou_all_patches.bps`**, not to a clean ROM. It uses a separate spare area that the combined build leaves untouched, and it chains onto the combined build's own frame hook instead of replacing it. Apply `garou_all_patches.bps` first, then apply `garou_shadow_colors.bps` to the result.
 
 ## Requirements
 
 - A clean, matching **Garou: Mark of the Wolves P4 ROM**
-- One patch file from this repository
+- One patch file from this repository, plus `garou_shadow_colors.bps` if you want the shadow fixes
 - A BPS patching tool, such as **Floating IPS (Flips)**
 
 ## Applying a patch
@@ -33,7 +36,10 @@ The individual patches each place their own code in the same spare area of the R
 4. Select the clean Garou P4 ROM as the source.
 5. Save the patched P4 ROM.
 
-Each patch checks the source ROM's checksum and will refuse to apply (or warn) if it doesn't match. If you get a checksum mismatch, you're almost certainly feeding it a ROM that has already been patched — start again from a clean backup.
+To add the shadow patch, repeat those steps with `garou_shadow_colors.bps`, using
+the ROM you just saved as the source rather than a clean one.
+
+Each patch checks the source ROM's checksum and will refuse to apply (or warn) if it doesn't match. If you get a checksum mismatch, you're almost certainly feeding it the wrong source — every patch except `garou_shadow_colors.bps` wants a clean ROM, and that one wants the output of `garou_all_patches.bps`. Start again from a clean backup.
 
 ### Checksums
 
@@ -46,6 +52,12 @@ Source `253-ep4.p4` — CRC32 `DA92C08E`
 | `garou_no_pause_patch.bps` | `1723FD9F` |
 | `garou_stage_variations_patch.bps` | `2062C120` |
 | `garou_fatal_fury_title_patch.bps` | `41E98056` |
+
+The shadow patch is applied to an already-patched ROM, so it has a different source:
+
+| Patch | Source P4 CRC32 | Patched P4 CRC32 |
+|---|---|---|
+| `garou_shadow_colors.bps` | `B1D1A6EE` (output of `garou_all_patches.bps`) | `2D76068B` |
 
 Your emulator or ROM manager will warn that the P4 ROM's checksum no longer matches. That is expected for a patched ROM.
 
@@ -122,6 +134,47 @@ On Japanese and European machines the game behaves exactly as the original. On a
 
 Nothing else is touched. The first intro's plain title screen and all other in-game graphics are left exactly as they were in every region.
 
+### Shadow de-flicker and colours patch
+
+On most stages the characters cast a shadow on the floor: a copy of the character
+sprite, flipped vertically and drawn in solid black. The Neo Geo has no
+transparency, so the game draws each shadow only on every other frame and lets a
+CRT average it out to roughly half strength. The two shadows run in opposite
+phase, so only one of them is ever on screen at any moment. On a CRT this reads
+as a soft, semi-transparent shadow. On anything else it reads as flicker.
+
+This patch does two things:
+
+**Removes the flicker.** Both shadows are now drawn every frame. The change is a
+single branch in the shadow routine, which the game used to take on alternate
+frames to skip the draw.
+
+**Gives each stage its own shadow colour.** Drawn every frame, a shadow that was
+designed to be seen half the time comes out far too dark, so a flat black no
+longer looks right. The patch assigns a colour per stage, and per stage version
+where the versions differ enough to need it, chosen to sit against that stage's
+floor the way the half-strength original did.
+
+| Stage | Shadow colour | | Stage | Shadow colour |
+|---|---|---|---|---|
+| TERRY | none — no shadows | | MARCO | olive |
+| ROCK | cool grey-teal | | HOKUTOMARU | warm red-brown |
+| DONGHWAN | dark red | | FREEMAN | none — no shadows |
+| JAEHOON | blue-violet | | GRIFFON | neutral grey |
+| HOTARU 1 | near-black blue | | KEVIN 1 / 2 | deep red |
+| HOTARU 2 | lighter blue | | KEVIN 3 | cold blue |
+| GATO | none — no shadows | | GRANT | warm brown |
+| B.JENET | slate | | KAIN | cold blue |
+
+Terry and Freeman stages have no floor shadows at all. Gato's stage uses a rippling 
+water effect rather than a shadow; both keep as the original game.
+
+The colours live in a table inside the patch, one entry per stage and version,
+so they can be retuned later without touching any of the surrounding code.
+
+Nothing else changes. The shadows behave identically in every mode — Story,
+Survival, VS and Training all get the de-flickered, coloured shadows.
+
 ## Credits
 
 Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode.
@@ -129,5 +182,11 @@ Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of 
 ## Notes
 
 All patches only modify the **P4 ROM**. Keep the rest of the Garou ROM set unchanged.
+
+Because the shadows were originally meant to be seen half the time, drawing both
+of them every frame puts more sprites on the same scanlines than the original
+game ever did. Nothing was observed to drop out in testing, but the Neo Geo has a
+hard per-scanline sprite limit and real hardware may behave differently from an
+emulator here.
 
 Keep a backup of the original ROM and verify that each patched ROM has the expected size for your setup.
