@@ -134,6 +134,8 @@ On Japanese and European machines the game behaves exactly as the original. On a
 
 Nothing else is touched. The first intro's plain title screen and all other in-game graphics are left exactly as they were in every region.
 
+<img width="1280" height="896" alt="garou_alt_title" src="https://github.com/user-attachments/assets/eb57b70a-6bce-4c39-b6d7-5d3663697390" />
+
 ### Shadow de-flicker and colours patch
 
 On most stages the characters cast a shadow on the floor: a copy of the character
@@ -175,9 +177,12 @@ so they can be retuned later without touching any of the surrounding code.
 Nothing else changes. The shadows behave identically in every mode — Story,
 Survival, VS and Training all get the de-flickered, coloured shadows.
 
+<img width="640" height="1568" alt="garou_colors" src="https://github.com/user-attachments/assets/54275fff-11ef-4d36-930c-365dfc6ce15b" />
+
+
 ## Credits
 
-Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode.
+Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode and **Víctor** ([@vcp84](https://x.com/vcp84)) for reminding me the existence of the unused Fatal Fury title screen and attract mode logo.
 
 ## Notes
 
