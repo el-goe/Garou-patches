@@ -160,6 +160,9 @@ The patch only changes the second choice in Training Mode's character select.
 Your own character's portrait, the VS Mode selection screen and every other mode
 are untouched.
 
+<img width="1280" height="448" alt="garou_training_p2_portrait" src="https://github.com/user-attachments/assets/875a6def-8cb2-4e62-b896-cadb84b914c5" />
+
+
 ### Shadow de-flicker and colours patch
 
 On most stages the characters cast a shadow on the floor: a copy of the character
