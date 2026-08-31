@@ -4,11 +4,12 @@ This repository contains BPS patches for **Garou: Mark of the Wolves**, all targ
 
 | Patch | What it does | Source ROM it expects |
 |---|---|---|
-| `garou_all_patches.bps` | **All four fixes below, in one patch** | Clean, vanilla P4 ROM |
+| `garou_all_patches.bps` | **All five fixes below, in one patch** | Clean, vanilla P4 ROM |
 | `garou_training_music_patch.bps` | Restores background music in Training Mode, with an ON/OFF toggle | Clean, vanilla P4 ROM |
 | `garou_no_pause_patch.bps` | Fixes leftover "PAUSE" text corrupting the Training Mode options menu | Clean, vanilla P4 ROM |
 | `garou_stage_variations_patch.bps` | Lets you pick alternate stage variations (day / sunset / night, etc.) in STAGE CHANGE | Clean, vanilla P4 ROM |
 | `garou_fatal_fury_title_patch.bps` | Restores the unused "FATAL FURY" title screen and logo — **USA region only** | Clean, vanilla P4 ROM |
+| `garou_portrait_patch.bps` | Shows the sparring character's portrait while you pick it in Training Mode | Clean, vanilla P4 ROM |
 | `garou_shadow_colors.bps` | Removes the flicker from the floor shadows and gives each stage its own shadow colour | A ROM already patched with `garou_all_patches.bps` |
 
 Pick the one that fits what you want:
@@ -47,17 +48,18 @@ Source `253-ep4.p4` — CRC32 `DA92C08E`
 
 | Patch | Patched P4 CRC32 |
 |---|---|
-| `garou_all_patches.bps` | `B1D1A6EE` |
+| `garou_all_patches.bps` | `B048742A` |
 | `garou_training_music_patch.bps` | `F9617DE9` |
 | `garou_no_pause_patch.bps` | `1723FD9F` |
 | `garou_stage_variations_patch.bps` | `2062C120` |
 | `garou_fatal_fury_title_patch.bps` | `41E98056` |
+| `garou_portrait_patch.bps` | `DB0B124A` |
 
 The shadow patch is applied to an already-patched ROM, so it has a different source:
 
 | Patch | Source P4 CRC32 | Patched P4 CRC32 |
 |---|---|---|
-| `garou_shadow_colors.bps` | `B1D1A6EE` (output of `garou_all_patches.bps`) | `2D76068B` |
+| `garou_shadow_colors.bps` | `B048742A` (output of `garou_all_patches.bps`) | `EAF6D7C3` |
 
 Your emulator or ROM manager will warn that the P4 ROM's checksum no longer matches. That is expected for a patched ROM.
 
@@ -78,7 +80,7 @@ It also adds a new entry in the Training Mode options menu that lets you enable 
 
 Enter Training Mode and use the new **MUSIC** option in the Training Mode menu to toggle the feature.
 
-- **ON** — Training Mode music isº restored and follows the selected stage.
+- **ON** — Training Mode music is restored and follows the selected stage.
 - **OFF** — Training Mode music is muted.
 
 <img width="960" height="672" alt="garou_music_menu" src="https://github.com/user-attachments/assets/70b096b0-df51-48a1-9da8-bed3a3773647" /> 
@@ -135,6 +137,28 @@ On Japanese and European machines the game behaves exactly as the original. On a
 Nothing else is touched. The first intro's plain title screen and all other in-game graphics are left exactly as they were in every region.
 
 <img width="1280" height="896" alt="garou_alt_title" src="https://github.com/user-attachments/assets/eb57b70a-6bce-4c39-b6d7-5d3663697390" />
+
+### Portrait patch
+
+In Training Mode you pick your own character first, and then a second one to
+spar against. The game shows your character's portrait on the left, but the
+right-hand panel stays empty for the whole of the second choice — the only
+feedback you get is the small cursor moving along the row of face icons at the
+bottom of the screen.
+
+This patch fills that panel in. While you are choosing the sparring character,
+its portrait appears in the P2 slot and follows the cursor, exactly the way P2's
+portrait behaves in VS Mode.
+
+It is most useful for the hidden characters. Grant and Kain are not part of the
+normal roster, and their icons in the selection row give you very little to go
+on, so picking one as your sparring partner was largely guesswork — you found
+out which one you had chosen after the fight had already loaded. With the
+portrait showing, you can see exactly who you are about to select.
+
+The patch only changes the second choice in Training Mode's character select.
+Your own character's portrait, the VS Mode selection screen and every other mode
+are untouched.
 
 ### Shadow de-flicker and colours patch
 
