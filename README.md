@@ -211,6 +211,8 @@ Survival, VS and Training all get the de-flickered, coloured shadows.
 
 Thanks to **DaRKSLaiN** ([@sete_kitt](https://x.com/sete_kitt)) for the idea of making the alternative stage versions selectable in Training Mode and **Víctor** ([@vcp84](https://x.com/vcp84)) for reminding me the existence of the unused Fatal Fury title screen and attract mode logo.
 
+You can find me at [@el_goe](https://x.com/el_goe) :)
+
 ## Notes
 
 All patches only modify the **P4 ROM**. Keep the rest of the Garou ROM set unchanged.
